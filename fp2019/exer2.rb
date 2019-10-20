@@ -40,9 +40,9 @@ puts "* Ex. 3"
 def calc_definite_integral(a,b,n)
   expression = Proc.new
   puts "[#{a}, #{b}], n = #{n}"
-  puts "\t=> #{definite_integral_with_left_edge_of_section(a,b,n, &expression)} (left edge)"
-  puts "\t=> #{definite_integral_with_center_of_section(a,b,n, &expression)} (center)"
-  puts "\t=> #{definite_integral_with_right_edge_of_section(a,b,n, &expression)} (right edge)"
+  printf "\t=> %.20f (left edge)\n", definite_integral_with_left_edge_of_section(a,b,n, &expression)
+  printf "\t=> %.20f (center edge)\n", definite_integral_with_center_of_section(a,b,n, &expression)
+  printf "\t=> %.20f (right edge)\n", definite_integral_with_right_edge_of_section(a,b,n, &expression)
 end
 
 def average_either_side_definite_integral(a,b,n)
@@ -50,8 +50,8 @@ def average_either_side_definite_integral(a,b,n)
   puts "[#{a}, #{b}], n = #{n}"
   left = definite_integral_with_left_edge_of_section(a,b,n, &expression)
   right = definite_integral_with_right_edge_of_section(a,b,n, &expression)
-  r = (left+right)/2
-  puts "\t=> #{r}"
+  avg = (left+right)/2
+  printf "\t=> %.20f\n", avg
 end
 
 def average_definite_integral(a,b,n)
@@ -60,8 +60,8 @@ def average_definite_integral(a,b,n)
   left = definite_integral_with_left_edge_of_section(a,b,n, &expression)
   right = definite_integral_with_right_edge_of_section(a,b,n, &expression)
   center = definite_integral_with_center_of_section(a,b,n, &expression)
-  r = (left+right+center)/3
-  puts "\t=> #{r}"
+  avg = (left+right+center)/3
+  printf "\t=> %.20f\n", avg
 end
 
 puts ">> f(x) = x^2"
