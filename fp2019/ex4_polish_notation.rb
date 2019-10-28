@@ -1,3 +1,5 @@
+# (c) Eguchi
+
 # 二項演算子 のみ
 #   "+" 加算
 #   "-" 除算
@@ -14,9 +16,13 @@ BINARY_OPERATIONS = {
   "^" => -> (l, r) { l ** r },
   "%" => -> (l, r) { l % r },
 }
-BINARY_OPERATORS = BINARY_OPERATIONS.keys
-OPERATORS = BINARY_OPERATORS
 
+BINARY_OPERATORS = BINARY_OPERATIONS.keys
+def bi_op?(c)
+  BINARY_OPERATORS.include?(c)
+end
+
+OPERATORS = BINARY_OPERATORS
 def op?(c)
   OPERATORS.include?(c)
 end
@@ -24,18 +30,26 @@ end
 # Generate tree
 def grouping(a)
   return [a.first.to_i, 1] unless op?(a.first)
+
+  op = a.first
+  node = [op]
+
   seek = 1
-  lv, ls = grouping(a[seek..a.size])
-  seek += ls
-  rv, rs = grouping(a[seek..a.size])
-  seek += rs
-  [[a.first, lv, rv], seek]
+  if bi_op?(op)
+    2.times do
+      child, s = grouping(a[seek..a.size])
+      seek += s
+      node.push(child)
+    end
+  end
+
+  [node, seek]
 end
 
 # Calculate [op, ...numbers] node
-def calculate_node!(op, *args)
-  raise "NOT OP." unless OPERATORS.include?(op)
-  if BINARY_OPERATORS.include?(op)
+def operator!(op, *args)
+  raise "Unhandled." unless op?(op)
+  if bi_op?(op)
     left, right = args
 	return BINARY_OPERATIONS[op].call(left, right)
   end
@@ -44,10 +58,10 @@ end
 # Eval tree recursively
 def visit!(tree)
   op = tree.first
-  calculate_node!(
+  args = tree[1..tree.size].map { |child| child.is_a?(Array) ? visit!(child) : child }
+  operator!(
     op,
-    tree[1].is_a?(Array) ? visit!(tree[1]) : tree[1],
-    tree[2].is_a?(Array) ? visit!(tree[2]) : tree[2],
+    *args
   )
 end
 
