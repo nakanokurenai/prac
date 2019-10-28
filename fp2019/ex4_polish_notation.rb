@@ -47,7 +47,7 @@ def grouping(a)
 end
 
 # Calculate [op, ...numbers] node
-def operator!(op, *args)
+def calculate_node!(op, *args)
   raise "Unhandled." unless op?(op)
   if bi_op?(op)
     left, right = args
@@ -59,7 +59,7 @@ end
 def visit!(tree)
   op = tree.first
   args = tree[1..tree.size].map { |child| child.is_a?(Array) ? visit!(child) : child }
-  operator!(
+  calculate_node!(
     op,
     *args
   )
