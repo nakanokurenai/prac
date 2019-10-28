@@ -48,7 +48,7 @@ end
 
 # Calculate [op, ...numbers] node
 def calculate_node!(op, *args)
-  raise "Unhandled." unless op?(op)
+  raise "Invalid node was given. [#{op}] #{args}" unless op?(op)
   if bi_op?(op)
     left, right = args
 	return BINARY_OPERATIONS[op].call(left, right)
@@ -57,6 +57,7 @@ end
 
 # Eval tree recursively
 def visit!(tree)
+  raise "Invalid tree was given. #{tree}" unless tree.is_a?(Array)
   op = tree.first
   args = tree[1..tree.size].map { |child| child.is_a?(Array) ? visit!(child) : child }
   calculate_node!(
@@ -67,7 +68,6 @@ end
 
 def calc_pn(s)
   tree, = grouping(s.split ' ')
-  p tree
   visit!(tree)
 end
 
