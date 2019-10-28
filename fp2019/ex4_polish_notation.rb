@@ -1,6 +1,6 @@
 # (c) Eguchi
 
-# 二項演算子 のみ
+# 整数の 二項演算 のみ
 #   "+" 加算
 #   "-" 除算
 #   "*" 乗算
@@ -67,6 +67,7 @@ end
 
 def calc_pn(s)
   tree, = grouping(s.split ' ')
+  p tree
   visit!(tree)
 end
 
