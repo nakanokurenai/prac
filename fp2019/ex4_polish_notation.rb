@@ -71,5 +71,5 @@ def calc_pn(s)
   visit!(tree)
 end
 
-puts "ポーランド記法:"
+print "ポーランド記法 > "
 p calc_pn gets
