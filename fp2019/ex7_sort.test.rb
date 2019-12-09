@@ -3,6 +3,7 @@ require "minitest/autorun"
 require "minitest/benchmark"
 
 require_relative "ex7_sort.rb"
+require_relative "ex7_sort_addition.rb"
 
 def randarray(n)
   return Array.new(n) do rand(10000) end
@@ -36,21 +37,32 @@ class TestMergeSort < Minitest::Test
     a = randarray(10)
     assert_equal a.sort(), merge_sort(a)
   end
-  def test_merge_sort_random
-    a = randarray(100)
+  def test_merge_sort_random_1000
+    a = randarray(1000)
     assert_equal a.sort(), merge_sort(a)
+  end
+  def test_quick_sort_random_1000
+    a = randarray(1000)
+    assert_equal a.sort(), quicksort(a)
   end
 end
 
 class TestSortAlgorithmBenchmark < Minitest::Benchmark
   def self.bench_range
-    [1, 10, 100, 1_000, 10_000, 100_000, 1_000_000]
+    [1, 10, 100, 1_000, 10_000, 100_000]
   end
 
   def bench_merge_sort
     assert_performance_linear do |n|
       ra = randarray(n)
       merge_sort(ra)
+    end
+  end
+
+  def bench_quick_sort
+    assert_performance_linear do |n|
+      ra = randarray(n)
+      quicksort(ra)
     end
   end
 
