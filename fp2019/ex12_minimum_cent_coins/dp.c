@@ -1,6 +1,11 @@
+#include <stdio.h>
+
 unsigned long minimum_cent_coins_dp(unsigned long n, unsigned char *minimum_coin_selection, unsigned long *memo_minimum_count_of_coin) {
   if (n == 0) {
     return 0;
+  }
+  if (minimum_coin_selection[n-1] != 0) {
+    return minimum_coin_selection[n-1];
   }
   for (unsigned long i = 1; i <= n; i++) {
     char coin = 1;
@@ -24,4 +29,30 @@ unsigned long minimum_cent_coins_dp(unsigned long n, unsigned char *minimum_coin
     memo_minimum_count_of_coin[i-1] = min;
   }
   return memo_minimum_count_of_coin[n-1];
+}
+
+void dp_selection_to_formula(unsigned long n, char *minimum_coin_selection, char *formula) {
+  unsigned long one = 0;
+  unsigned long five = 0;
+  unsigned long ten = 0;
+  unsigned long twenty_five = 0;
+  while (n > 0) {
+    int coin = minimum_coin_selection[n-1];
+    switch (coin) {
+      case 1:
+        one++;
+        break;
+      case 5:
+        five++;
+        break;
+      case 10:
+        ten++;
+        break;
+      case 25:
+        twenty_five++;
+        break;
+    }
+    n = n - coin;
+  }
+  sprintf(formula, "1*%lu + 5*%lu + 10*%lu + 25*%lu", one, five, ten, twenty_five);
 }

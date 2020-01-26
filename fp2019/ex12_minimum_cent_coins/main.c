@@ -5,7 +5,8 @@
 #include "dp.h"
 #include "greedy.h"
 
-#define N_MAX 100000
+// ~ 20MB までなら malloc してよし
+#define N_MAX (1000 * 1000 * 20 / (sizeof(unsigned long) + sizeof(unsigned char)))
 
 int compare_dp_and_greedy(int total, unsigned char *dp_selection, unsigned long *dp_memo) {
   unsigned long cnt_by_dp = minimum_cent_coins_dp(total, dp_selection, dp_memo);
@@ -23,19 +24,20 @@ int nsscan(char *command, unsigned long *n) {
     return 1;
   }
   if (sscanf(command, "%*c%lu", n) < 0) {
+    printf("Invalid argument: sscanf returns error.\n");
     return 1;
   };
-  if (*n < N_MAX) {
-    return 0;
+  if (*n > N_MAX) {
+    printf("N (%lu) over N_MAX (%lu)\n", *n, N_MAX);
+    return 1;
   }
-  printf("N (%lu) over N_MAX (%lu)\n", *n, N_MAX);
-  return 1;
+  return 0;
 }
 
 int main() {
   unsigned long *dp_memo = malloc(N_MAX * sizeof(unsigned long));
   unsigned char *dp_selection = malloc(N_MAX);
-  for (unsigned long i=0; i<N_MAX; i++) {
+  for (unsigned long i = 0; i < N_MAX; i++) {
     dp_memo[i] = 0;
     dp_selection[i] = 0;
   }
@@ -45,7 +47,7 @@ int main() {
   while(1) {
     printf("> ");
     if (scanf("%s", &command) < 0) {
-      printf("scanf error");
+      printf("scanf error.\n");
       continue;
     };
 
@@ -58,13 +60,10 @@ int main() {
       case 'm':
         if (nsscan(command, &n) == 0) {
           minimum_cent_coins_dp(n, dp_selection, dp_memo);
-          printf("%lu coins, [", dp_memo[n-1]);
-          while (n > 0) {
-            int coin = dp_selection[n-1];
-            printf(" %d", coin);
-            n = n - coin;
-          }
-          printf(" ]\n");
+          printf("%lu coins, ", dp_memo[n-1]);
+          char formula[100];
+          dp_selection_to_formula(n, dp_selection, formula);
+          printf("[ %s ]\n", formula);
         }
         break;
       case 'c':
@@ -79,7 +78,7 @@ int main() {
         }
         break;
       case 'l':
-        printf("%zu\n", N_MAX);
+        printf("N_MAX: %zu\n", N_MAX);
         break;
       default:
         printf("Unknown command '%s'.\n", command);
