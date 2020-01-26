@@ -1,4 +1,4 @@
-compile: main.c dp.c dp.h greedy.c greedy.h
+compile: main.c dp.c greedy.c
 	gcc $^
 
 run: compile ./a.out
