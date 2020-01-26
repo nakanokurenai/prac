@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include "dp.h"
 #include "greedy.h"
 
 // ~ 20MB 程度 malloc する
-#define N_MAX (1000 * 1000 * 20 / (sizeof(unsigned long) + sizeof(unsigned char)))
+#define N_MAX (1000 * 1000 * 1000)
 
 int compare_dp_and_greedy(int total, unsigned char *dp_selection, unsigned long *dp_memo) {
   unsigned long cnt_by_dp = minimum_cent_coins_dp(total, dp_selection, dp_memo);
@@ -37,6 +38,12 @@ int nsscan(char *command, unsigned long *n) {
 int main() {
   unsigned long *dp_memo = malloc(N_MAX * sizeof(unsigned long));
   unsigned char *dp_selection = malloc(N_MAX);
+
+  if (dp_memo == NULL || dp_selection == NULL) {
+    printf("malloc failed.");
+    return 1;
+  }
+
   for (unsigned long i = 0; i < N_MAX; i++) {
     dp_memo[i] = 0;
     dp_selection[i] = 0;
