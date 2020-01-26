@@ -1,5 +1,5 @@
 compile: main.c dp.c greedy.c
-	gcc $^
+	gcc $^ -g -o mc.out
 
 run: compile ./a.out
-	./a.out
+	./mc.out

@@ -1,3 +1,3 @@
 #pragma once
 
-extern int minimum_cent_coins_dp(int n, int *memo, int *memo2);
+extern unsigned long minimum_cent_coins_dp(unsigned long n, unsigned char *selection, unsigned long *memo);

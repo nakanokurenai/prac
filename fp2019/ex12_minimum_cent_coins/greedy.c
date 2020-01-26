@@ -1,5 +1,5 @@
-int minimum_cent_coins_greedy(int n) {
-  int remainder = n, coins = 0;
+unsigned long minimum_cent_coins_greedy(unsigned long n) {
+  unsigned long remainder = n, coins = 0;
   coins += remainder / 25;
   remainder = remainder % 25;
   if (remainder == 0) return coins;
