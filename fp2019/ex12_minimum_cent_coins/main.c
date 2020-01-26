@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 #include "dp.h"
 #include "greedy.h"
@@ -37,12 +38,12 @@ int main() {
   }
 
   while(1) {
-    printf("> ");
-
     char command[100];
-    int n;
+    printf("> ");
     scanf("%s", &command);
 
+    int n;
+    clock_t begin = clock();
     switch (command[0]) {
       case 'q':
         return 0;
@@ -73,7 +74,6 @@ int main() {
         printf("Unknown command '%s'.\n", command);
         break;
     }
+    printf("%f seconds elapsed.\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
   }
-
-  
 }
