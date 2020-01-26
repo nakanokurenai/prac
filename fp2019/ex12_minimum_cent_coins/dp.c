@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-unsigned long get_i(unsigned long i, unsigned long *memo_minimum_count_of_coin) {
+unsigned long read_memorize(unsigned long i, unsigned long *memo_minimum_count_of_coin) {
   if (i == 0) {
     return 0;
   }
@@ -11,9 +11,13 @@ unsigned long minimum_cent_coins_dp(unsigned long n, unsigned char *minimum_coin
   if (n == 0) {
     return 0;
   }
+  if (read_memorize(n, memo_minimum_count_of_coin) != 0) {
+    // 高速化
+    return read_memorize(n, memo_minimum_count_of_coin);
+  }
 
   for (unsigned long i = 1; i <= n; i++) {
-    if (minimum_coin_selection[i-1] != 0) {
+    if (read_memorize(i, memo_minimum_count_of_coin) != 0) {
       continue;
     }
     char coin = 1;
@@ -22,10 +26,10 @@ unsigned long minimum_cent_coins_dp(unsigned long n, unsigned char *minimum_coin
       // memo_minimum_count_of_coin[-1] はないため
       min = 1;
     } else {
-      unsigned long by_01 = get_i(i-1, memo_minimum_count_of_coin);
-      unsigned long by_05 = i >= 5 ? get_i(i-5, memo_minimum_count_of_coin) : by_01;
-      unsigned long by_10 = i >= 10 ? get_i(i-10, memo_minimum_count_of_coin) : by_05;
-      unsigned long by_25 = i >= 25 ? get_i(i-25, memo_minimum_count_of_coin) : by_10;
+      unsigned long by_01 = read_memorize(i-1, memo_minimum_count_of_coin);
+      unsigned long by_05 = i >= 5 ? read_memorize(i-5, memo_minimum_count_of_coin) : by_01;
+      unsigned long by_10 = i >= 10 ? read_memorize(i-10, memo_minimum_count_of_coin) : by_05;
+      unsigned long by_25 = i >= 25 ? read_memorize(i-25, memo_minimum_count_of_coin) : by_10;
 
       min = by_01;
       if (min > by_05) min = by_05, coin = 5;
