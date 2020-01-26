@@ -70,7 +70,9 @@ int main() {
         if (nsscan(command, &n) == 0) {
           for (int i = 1; i <= n;  i++) {
             printf("%7d c => ", i);
-            if (compare_dp_and_greedy(i, dp_selection, dp_memo) == 0) {
+            if (compare_dp_and_greedy(i, dp_selection, dp_memo) == 1) {
+              break;
+            } else {
               printf("OK");
             }
             printf("\n");
