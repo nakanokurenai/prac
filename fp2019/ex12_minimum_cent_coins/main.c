@@ -5,7 +5,7 @@
 #include "dp.h"
 #include "greedy.h"
 
-// ~ 20MB までなら malloc してよし
+// ~ 20MB 程度 malloc する
 #define N_MAX (1000 * 1000 * 20 / (sizeof(unsigned long) + sizeof(unsigned char)))
 
 int compare_dp_and_greedy(int total, unsigned char *dp_selection, unsigned long *dp_memo) {
@@ -68,22 +68,30 @@ int main() {
         break;
       case 'c':
         if (nsscan(command, &n) == 0) {
-          for (int i = 1; i <= n;  i++) {
-            printf("%7d c => ", i);
+          for (unsigned long i = 1; i <= n; i++) {
+            printf("\r%7lu c => ", i);
             if (compare_dp_and_greedy(i, dp_selection, dp_memo) == 1) {
               break;
             } else {
               printf("OK");
             }
-            printf("\n");
           }
+          printf("\n");
         }
         break;
       case 'l':
         printf("N_MAX: %zu\n", N_MAX);
         break;
+      case 'h':
+        printf("mcc\n");
+        printf("\tq: 終了\n");
+        printf("\th: ヘルプ\n");
+        printf("\tl: 受けつける数値の最大値を表示\n");
+        printf("\tm%%d: 動的計画法アルゴリズムによって N [c] に対して枚数とトレースバックを表示\n");
+        printf("\tc%%d: N [c] までの枚数を貪欲法でもDPと同様に解けるか検証\n");
+        break;
       default:
-        printf("Unknown command '%s'.\n", command);
+        printf("Unknown command '%c'.\n", command[0]);
         break;
     }
     printf("%f seconds elapsed.\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
